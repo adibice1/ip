@@ -11,7 +11,7 @@ public class Dibo {
                 + "|____/ \\__,_|_|\\_\\___|\n";
         Scanner scanner = new Scanner(System.in);
         String horizontalLine = "===============================================";
-        ArrayList<String> todoList = new ArrayList<>();
+        ArrayList<Task> todoList = new ArrayList<>();
 
 
         System.out.println(horizontalLine);
@@ -22,18 +22,37 @@ public class Dibo {
         while (true) {
             String userInput = scanner.nextLine();
             System.out.println(horizontalLine);
+
+            Task t = new Task(userInput);
+
             if (userInput.equalsIgnoreCase("bye")) {
                 System.out.println("Bye. Hope to see you again soon!");
                 System.out.println(horizontalLine);
                 break;
             }
-            todoList.add(userInput);
+
+            todoList.add(t);
+
             if (userInput.equalsIgnoreCase("list")) {
                 for (int i = 0; i < todoList.size(); i++) {
-                    if (!todoList.get(i).equalsIgnoreCase("list")) {
+                    if (!todoList.get(i).getDescription().equalsIgnoreCase("list")) {
                         System.out.println((i + 1) + ". " + todoList.get(i));
                     }
                 }
+                System.out.println(horizontalLine);
+            } else if (userInput.toLowerCase().startsWith("mark ")) {
+                int taskNumber = Integer.parseInt(userInput.substring(5).trim());
+                Task task = todoList.get(taskNumber - 1);
+                task.markAsDone();
+                System.out.println("Nice! I've marked this task as done:");
+                System.out.println(task);
+                System.out.println(horizontalLine);
+            } else if (userInput.toLowerCase().startsWith("unmark ")) {
+                int taskNumber = Integer.parseInt(userInput.substring(7).trim());
+                Task task = todoList.get(taskNumber - 1);
+                task.markAsUndone();
+                System.out.println("OK, I've marked this task as not done yet:");
+                System.out.println(task);
                 System.out.println(horizontalLine);
             } else {
                 System.out.println("added: " + userInput);
@@ -42,3 +61,4 @@ public class Dibo {
         }
     }
 }
+

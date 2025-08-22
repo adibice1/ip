@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Dibo {
     public static void main(String[] args) {
@@ -9,6 +11,8 @@ public class Dibo {
                 + "|____/ \\__,_|_|\\_\\___|\n";
         Scanner scanner = new Scanner(System.in);
         String horizontalLine = "===============================================";
+        ArrayList<String> todoList = new ArrayList<>();
+
 
         System.out.println(horizontalLine);
         System.out.println("Hello! I'm Dibo the Dragon\n");
@@ -23,8 +27,18 @@ public class Dibo {
                 System.out.println(horizontalLine);
                 break;
             }
-            System.out.println(userInput);
-            System.out.println(horizontalLine);
+            todoList.add(userInput);
+            if (userInput.equalsIgnoreCase("list")) {
+                for (int i = 0; i < todoList.size(); i++) {
+                    if (!todoList.get(i).equalsIgnoreCase("list")) {
+                        System.out.println((i + 1) + ". " + todoList.get(i));
+                    }
+                }
+                System.out.println(horizontalLine);
+            } else {
+                System.out.println("added: " + userInput);
+                System.out.println(horizontalLine);
+            }
         }
     }
 }

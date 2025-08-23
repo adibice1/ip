@@ -23,19 +23,15 @@ public class Dibo {
             String userInput = scanner.nextLine();
             System.out.println(horizontalLine);
 
-            Task t = new Task(userInput);
-
             if (userInput.equalsIgnoreCase("bye")) {
                 System.out.println("Bye. Hope to see you again soon!");
                 System.out.println(horizontalLine);
                 break;
             }
 
-            todoList.add(t);
-
             if (userInput.equalsIgnoreCase("list")) {
                 for (int i = 0; i < todoList.size(); i++) {
-                    if (!todoList.get(i).getDescription().equalsIgnoreCase("list")) {
+                    if (!todoList.get(i).getDescription().equalsIgnoreCase("list") || !todoList.get(i).getDescription().contains("mark") || !todoList.get(i).getDescription().contains("unmark")) {
                         System.out.println((i + 1) + ". " + todoList.get(i));
                     }
                 }
@@ -54,7 +50,31 @@ public class Dibo {
                 System.out.println("OK, I've marked this task as not done yet:");
                 System.out.println(task);
                 System.out.println(horizontalLine);
-            } else {
+            } else if (userInput.toLowerCase().startsWith("deadline ")) {
+                Deadline deadline = Deadline.parseDeadlineInput(userInput);
+                todoList.add(deadline);
+                System.out.println("Got it. I've added this task:");
+                System.out.println(deadline);
+                System.out.println("Now you have " + todoList.size() + " tasks in the list.");
+                System.out.println(horizontalLine);
+            } else if (userInput.toLowerCase().startsWith("event ")) {
+                Event event = Event.parseEventInput(userInput);
+                todoList.add(event);
+                System.out.println("Got it. I've added this task:");
+                System.out.println(event);
+                System.out.println("Now you have " + todoList.size() + " tasks in the list.");
+                System.out.println(horizontalLine);
+            } else if (userInput.toLowerCase().startsWith("todo ")) {
+                Todo todo = Todo.parseTodoInput(userInput);
+                todoList.add(todo);
+                System.out.println("Got it. I've added this task:");
+                System.out.println(todo);
+                System.out.println("Now you have " + todoList.size() + " tasks in the list.");
+                System.out.println(horizontalLine);
+            }
+            else {
+                Task t = new Task(userInput);
+                todoList.add(t);
                 System.out.println("added: " + userInput);
                 System.out.println(horizontalLine);
             }

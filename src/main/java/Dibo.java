@@ -39,6 +39,8 @@ public class Dibo {
                 } else if (userInput.toLowerCase().contains("meow")) {
                     System.out.println("meowmeowmeow");
                     System.out.println(horizontalLine);
+                } else if (userInput.toLowerCase().startsWith("delete")) {
+                    handleDeleteCommand(userInput, todoList, horizontalLine);
                 }
                 else {
                     // For any unrecognized commands
@@ -129,5 +131,22 @@ public class Dibo {
         if (taskNumber < 1 || taskNumber > todoList.size()) {
             throw new IllegalArgumentException("Invalid task number. Please choose between 1 and " + todoList.size());
         }
+    }
+
+    private static void handleDeleteCommand(String userInput, ArrayList<Task> todoList, String horizontalLine) {
+        String numberStr = userInput.substring(7).trim();
+        if (numberStr.isEmpty()) {
+            throw new IllegalArgumentException("Please specify a task number to unmark.");
+        }
+
+        int taskNumber = Integer.parseInt(numberStr);
+        validateTaskNumber(taskNumber, todoList);
+
+        Task task = todoList.get(taskNumber - 1);
+        todoList.remove(taskNumber - 1);
+        System.out.println("Noted. I've removed this task:");
+        System.out.println(task);
+        System.out.println("Now you have " + todoList.size() + " tasks in the list.");
+        System.out.println(horizontalLine);
     }
 }

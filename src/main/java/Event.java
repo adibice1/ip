@@ -9,6 +9,16 @@ public class Event extends Task {
     }
 
     public static Event parseEventInput(String userInput) {
+        if (!userInput.toLowerCase().startsWith("event")) {
+            throw new IllegalArgumentException("Input must start with 'event'");
+        }
+        if (!userInput.contains("/from")) {
+            throw new IllegalArgumentException("Missing '/from' in deadline command. Format: event <description> /from <time> /to <time>");
+        }
+        if (!userInput.contains("/to")) {
+            throw new IllegalArgumentException("Missing '/to' in deadline command. Format: event <description> /from <time> /to <time>");
+        }
+
         String input = userInput.replace("event", "").trim();
         String[] parts = input.split("/from");
 
@@ -18,6 +28,17 @@ public class Event extends Task {
 
         String from = subParts[0].trim();
         String to = subParts[1].trim();
+
+        if (description.isEmpty()) {
+            throw new IllegalArgumentException("Description cannot be empty. Format: event <description> /from <time> /to <time>");
+        }
+        if (from.isEmpty()) {
+            throw new IllegalArgumentException("Time cannot be empty after /from. Format: event <description> /from <time> /to <time>");
+        }
+        if (to.isEmpty()) {
+            throw new IllegalArgumentException("Time cannot be empty after /to. Format: event <description> /from <time> /to <time>");
+        }
+
         return new Event(description, from, to);
     }
 

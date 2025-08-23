@@ -4,8 +4,13 @@ public class Todo extends Task {
     }
 
     public static Todo parseTodoInput(String userInput) {
-        String input = userInput.replace("todo", "").trim();
-        return new Todo(input);
+        String description = userInput.replace("todo", "").trim();
+
+        if (description.isEmpty()) {
+            throw new IllegalArgumentException("Description cannot be empty. Format: todo <description>");
+        }
+
+        return new Todo(description);
     }
 
     @Override

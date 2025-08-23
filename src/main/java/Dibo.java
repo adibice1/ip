@@ -4,19 +4,13 @@ import java.util.Arrays;
 
 public class Dibo {
     public static void main(String[] args) {
-        String logo = " ____        _        \n"
-                + "|  _ \\ _   _| | _____ \n"
-                + "| | | | | | | |/ / _ \\\n"
-                + "| |_| | |_| |   <  __/\n"
-                + "|____/ \\__,_|_|\\_\\___|\n";
         Scanner scanner = new Scanner(System.in);
         String horizontalLine = "===============================================";
         ArrayList<Task> todoList = new ArrayList<>();
 
-
         System.out.println(horizontalLine);
-        System.out.println("Hello! I'm Dibo the Dragon\n");
-        System.out.println("What can I do for you?\n");
+        System.out.println("Hello! I'm Dibo the Dragon");
+        System.out.println("What can I do for you?");
         System.out.println(horizontalLine);
 
         while (true) {
@@ -29,56 +23,111 @@ public class Dibo {
                 break;
             }
 
-            if (userInput.equalsIgnoreCase("list")) {
-                for (int i = 0; i < todoList.size(); i++) {
-                    if (!todoList.get(i).getDescription().equalsIgnoreCase("list") || !todoList.get(i).getDescription().contains("mark") || !todoList.get(i).getDescription().contains("unmark")) {
-                        System.out.println((i + 1) + ". " + todoList.get(i));
-                    }
+            try {
+                if (userInput.equalsIgnoreCase("list")) {
+                    handleListCommand(todoList, horizontalLine);
+                } else if (userInput.toLowerCase().startsWith("mark")) {
+                    handleMarkCommand(userInput, todoList, horizontalLine);
+                } else if (userInput.toLowerCase().startsWith("unmark")) {
+                    handleUnmarkCommand(userInput, todoList, horizontalLine);
+                } else if (userInput.toLowerCase().startsWith("deadline")) {
+                    handleDeadlineCommand(userInput, todoList, horizontalLine);
+                } else if (userInput.toLowerCase().startsWith("event")) {
+                    handleEventCommand(userInput, todoList, horizontalLine);
+                } else if (userInput.toLowerCase().startsWith("todo")) {
+                    handleTodoCommand(userInput, todoList, horizontalLine);
+                } else if (userInput.toLowerCase().contains("meow")) {
+                    System.out.println("meowmeowmeow");
+                    System.out.println(horizontalLine);
                 }
+                else {
+                    // For any unrecognized commands
+                    System.out.println("OOPS!!! I'm sorry, but I don't know what that means :-(");
+                    System.out.println(horizontalLine);
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
                 System.out.println(horizontalLine);
-            } else if (userInput.toLowerCase().startsWith("mark ")) {
-                int taskNumber = Integer.parseInt(userInput.substring(5).trim());
-                Task task = todoList.get(taskNumber - 1);
-                task.markAsDone();
-                System.out.println("Nice! I've marked this task as done:");
-                System.out.println(task);
-                System.out.println(horizontalLine);
-            } else if (userInput.toLowerCase().startsWith("unmark ")) {
-                int taskNumber = Integer.parseInt(userInput.substring(7).trim());
-                Task task = todoList.get(taskNumber - 1);
-                task.markAsUndone();
-                System.out.println("OK, I've marked this task as not done yet:");
-                System.out.println(task);
-                System.out.println(horizontalLine);
-            } else if (userInput.toLowerCase().startsWith("deadline ")) {
-                Deadline deadline = Deadline.parseDeadlineInput(userInput);
-                todoList.add(deadline);
-                System.out.println("Got it. I've added this task:");
-                System.out.println(deadline);
-                System.out.println("Now you have " + todoList.size() + " tasks in the list.");
-                System.out.println(horizontalLine);
-            } else if (userInput.toLowerCase().startsWith("event ")) {
-                Event event = Event.parseEventInput(userInput);
-                todoList.add(event);
-                System.out.println("Got it. I've added this task:");
-                System.out.println(event);
-                System.out.println("Now you have " + todoList.size() + " tasks in the list.");
-                System.out.println(horizontalLine);
-            } else if (userInput.toLowerCase().startsWith("todo ")) {
-                Todo todo = Todo.parseTodoInput(userInput);
-                todoList.add(todo);
-                System.out.println("Got it. I've added this task:");
-                System.out.println(todo);
-                System.out.println("Now you have " + todoList.size() + " tasks in the list.");
-                System.out.println(horizontalLine);
-            }
-            else {
-                Task t = new Task(userInput);
-                todoList.add(t);
-                System.out.println("added: " + userInput);
+            } catch (Exception e) {
+                System.out.println("OOPS!!! Something went wrong: " + e.getMessage());
                 System.out.println(horizontalLine);
             }
         }
     }
-}
 
+    private static void handleListCommand(ArrayList<Task> todoList, String horizontalLine) {
+        if (todoList.isEmpty()) {
+            System.out.println("Your task list is empty!");
+        } else {
+            for (int i = 0; i < todoList.size(); i++) {
+                System.out.println((i + 1) + ". " + todoList.get(i));
+            }
+        }
+        System.out.println(horizontalLine);
+    }
+
+    private static void handleMarkCommand(String userInput, ArrayList<Task> todoList, String horizontalLine) {
+        String numberStr = userInput.substring(4).trim();
+        if (numberStr.isEmpty()) {
+            throw new IllegalArgumentException("Please specify a task number to mark.");
+        }
+
+        int taskNumber = Integer.parseInt(numberStr);
+        validateTaskNumber(taskNumber, todoList);
+
+        Task task = todoList.get(taskNumber - 1);
+        task.markAsDone();
+        System.out.println("Nice! I've marked this task as done:");
+        System.out.println(task);
+        System.out.println(horizontalLine);
+    }
+
+    private static void handleUnmarkCommand(String userInput, ArrayList<Task> todoList, String horizontalLine) {
+        String numberStr = userInput.substring(7).trim();
+        if (numberStr.isEmpty()) {
+            throw new IllegalArgumentException("Please specify a task number to unmark.");
+        }
+
+        int taskNumber = Integer.parseInt(numberStr);
+        validateTaskNumber(taskNumber, todoList);
+
+        Task task = todoList.get(taskNumber - 1);
+        task.markAsUndone();
+        System.out.println("OK, I've marked this task as not done yet:");
+        System.out.println(task);
+        System.out.println(horizontalLine);
+    }
+
+    private static void handleDeadlineCommand(String userInput, ArrayList<Task> todoList, String horizontalLine) {
+        Deadline deadline = Deadline.parseDeadlineInput(userInput);
+        todoList.add(deadline);
+        System.out.println("Got it. I've added this task:");
+        System.out.println(deadline);
+        System.out.println("Now you have " + todoList.size() + " tasks in the list.");
+        System.out.println(horizontalLine);
+    }
+
+    private static void handleEventCommand(String userInput, ArrayList<Task> todoList, String horizontalLine) {
+        Event event = Event.parseEventInput(userInput);
+        todoList.add(event);
+        System.out.println("Got it. I've added this task:");
+        System.out.println(event);
+        System.out.println("Now you have " + todoList.size() + " tasks in the list.");
+        System.out.println(horizontalLine);
+    }
+
+    private static void handleTodoCommand(String userInput, ArrayList<Task> todoList, String horizontalLine) {
+        Todo todo = Todo.parseTodoInput(userInput);
+        todoList.add(todo);
+        System.out.println("Got it. I've added this task:");
+        System.out.println(todo);
+        System.out.println("Now you have " + todoList.size() + " tasks in the list.");
+        System.out.println(horizontalLine);
+    }
+
+    private static void validateTaskNumber(int taskNumber, ArrayList<Task> todoList) {
+        if (taskNumber < 1 || taskNumber > todoList.size()) {
+            throw new IllegalArgumentException("Invalid task number. Please choose between 1 and " + todoList.size());
+        }
+    }
+}

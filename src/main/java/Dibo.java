@@ -1,12 +1,24 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.io.IOException;
 
 public class Dibo {
+    private static final String horizontalLine = "===============================================";
+    private static ArrayList<Task> todoList;
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        String horizontalLine = "===============================================";
-        ArrayList<Task> todoList = new ArrayList<>();
+
+        // Load tasks on startup with proper error handling
+        try {
+            todoList = Storage.loadTasks();
+            System.out.println("Tasks loaded successfully from file!");
+        } catch (IOException e) {
+            System.out.println("Error loading tasks: " + e.getMessage());
+            System.out.println("Starting with an empty task list.");
+            todoList = new ArrayList<>();
+        }
 
         System.out.println(horizontalLine);
         System.out.println("Hello! I'm Dibo the Dragon");
@@ -18,35 +30,64 @@ public class Dibo {
             System.out.println(horizontalLine);
 
             if (userInput.equalsIgnoreCase("bye")) {
+                // Save tasks before exiting
+                try {
+                    Storage.saveTasks(todoList);
+                    System.out.println("Tasks saved successfully!");
+                } catch (IOException e) {
+                    System.out.println("Error saving tasks: " + e.getMessage());
+                }
                 System.out.println("Bye. Hope to see you again soon!");
                 System.out.println(horizontalLine);
                 break;
             }
 
             try {
+                boolean shouldSave = false;
+
                 if (userInput.equalsIgnoreCase("list")) {
                     handleListCommand(todoList, horizontalLine);
                 } else if (userInput.toLowerCase().startsWith("mark")) {
                     handleMarkCommand(userInput, todoList, horizontalLine);
+                    shouldSave = true;
                 } else if (userInput.toLowerCase().startsWith("unmark")) {
                     handleUnmarkCommand(userInput, todoList, horizontalLine);
+                    shouldSave = true;
                 } else if (userInput.toLowerCase().startsWith("deadline")) {
                     handleDeadlineCommand(userInput, todoList, horizontalLine);
+                    shouldSave = true;
                 } else if (userInput.toLowerCase().startsWith("event")) {
                     handleEventCommand(userInput, todoList, horizontalLine);
+                    shouldSave = true;
                 } else if (userInput.toLowerCase().startsWith("todo")) {
                     handleTodoCommand(userInput, todoList, horizontalLine);
+                    shouldSave = true;
                 } else if (userInput.toLowerCase().contains("meow")) {
                     System.out.println("meowmeowmeow");
                     System.out.println(horizontalLine);
                 } else if (userInput.toLowerCase().startsWith("delete")) {
                     handleDeleteCommand(userInput, todoList, horizontalLine);
+                    shouldSave = true;
+                } else if (userInput.equalsIgnoreCase("save")) {
+                    // Manual save command
+                    Storage.saveTasks(todoList);
+                    System.out.println("Tasks saved manually!");
+                    System.out.println(horizontalLine);
                 }
                 else {
                     // For any unrecognized commands
                     System.out.println("OOPS!!! I'm sorry, but I don't know what that means :-(");
                     System.out.println(horizontalLine);
                 }
+
+                if (shouldSave) {
+                    try {
+                        Storage.saveTasks(todoList);
+                    } catch (IOException e) {
+                        System.out.println("Warning: Could not save tasks: " + e.getMessage());
+                    }
+                }
+
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
                 System.out.println(horizontalLine);

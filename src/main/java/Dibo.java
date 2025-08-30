@@ -1,7 +1,14 @@
+import com.sun.source.util.TaskListener;
+
+import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class Dibo {
     private static final String horizontalLine = "===============================================";
@@ -73,6 +80,8 @@ public class Dibo {
                     Storage.saveTasks(todoList);
                     System.out.println("Tasks saved manually!");
                     System.out.println(horizontalLine);
+                } else if (userInput.toLowerCase().startsWith("find date")) {
+                    handleFindByDateCommand(userInput, todoList, horizontalLine);
                 }
                 else {
                     // For any unrecognized commands
@@ -189,5 +198,58 @@ public class Dibo {
         System.out.println(task);
         System.out.println("Now you have " + todoList.size() + " tasks in the list.");
         System.out.println(horizontalLine);
+    }
+
+    private static void handleFindByDateCommand(String userInput, ArrayList<Task> todoList, String horizontalLine) {
+        String dateStr = userInput.substring(9).trim();
+        if (dateStr.isEmpty()) {
+            throw new IllegalArgumentException("Please specify a date to search for.");
+        }
+
+        try {
+            LocalDate searchDate = parseDate(dateStr);
+            List<Task> matchingTasks = new ArrayList<>();
+
+            for (Task task : todoList) {
+                if (task instanceof Deadline) {
+                    Deadline deadline = (Deadline) task;
+                    if (deadline.getDateTime().toLocalDate().equals(searchDate)) {
+                        matchingTasks.add(task);
+                    }
+                } else if (task instanceof Event) {
+                    Event event = (Event) task;
+                }
+            }
+
+            if (matchingTasks.isEmpty()) {
+                System.out.println("No tasks found for " +
+                        searchDate.format(DateTimeFormatter.ofPattern("MMM dd yyyy")));
+            } else {
+                System.out.println("Tasks on " +
+                        searchDate.format(DateTimeFormatter.ofPattern("MMM dd yyyy")) + ":");
+                for (int i = 0; i < matchingTasks.size(); i++) {
+                    System.out.println((i + 1) + ". " + matchingTasks.get(i));
+                }
+            }
+            System.out.println(horizontalLine);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date format. Please use formats like: 2019-12-02, 02/12/2019, Dec 02 2019");
+        }
+    }
+
+    private static LocalDate parseDate(String dateString) {
+        List<String> patterns = Arrays.asList(
+                "yyyy-MM-dd", "dd/MM/yyyy", "MM/dd/yyyy", "dd-MM-yyyy",
+                "MMM dd yyyy", "dd MMM yyyy"
+        );
+        for (String pattern : patterns) {
+            try {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+                return LocalDate.parse(dateString, formatter);
+            } catch (DateTimeParseException e) {
+                continue;
+            }
+        }
+        throw new DateTimeParseException("Unsupported date format", dateString, 0);
     }
 }

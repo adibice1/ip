@@ -4,6 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,10 +99,15 @@ public class Storage {
                     if (parts.length < 4) {
                         throw new IllegalArgumentException("Deadline task missing time information: " + line);
                     }
-                    String by = parts[3].trim();
-                    Deadline deadline = new Deadline(description, by);
-                    if (isDone) deadline.markAsDone();
-                    return deadline;
+                    String dateTimeStr = parts[3].trim();
+                    try {
+                        LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                        Deadline deadline = new Deadline(description, dateTime, dateTimeStr);
+                        if (isDone) deadline.markAsDone();
+                        return deadline;
+                    } catch (DateTimeParseException e) {
+                        throw new IllegalArgumentException("Invalid date-time format in file: " + dateTimeStr);
+                    }
 
                 case "E":
                     if (parts.length < 4) {
@@ -114,9 +124,15 @@ public class Storage {
                     String from = timeParts[0].trim();
                     String to = timeParts.length > 1 ? timeParts[1].trim() : from; // Use from as default if to is missing
 
-                    Event event = new Event(description, from, to);
-                    if (isDone) event.markAsDone();
-                    return event;
+                    try {
+                        LocalDateTime fromDateTime = LocalDateTime.parse(from, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                        LocalDateTime toDateTime = LocalDateTime.parse(to, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+                        Event event = new Event(description, from, to, fromDateTime, toDateTime);
+                        if (isDone) event.markAsDone();
+                        return event;
+                    } catch (DateTimeParseException e) {
+                        throw new IllegalArgumentException("Invalid date-time format in file: " + timeInfo);
+                    }
 
                 default:
                     throw new IllegalArgumentException("Unknown task type: " + type);

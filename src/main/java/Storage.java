@@ -21,7 +21,7 @@ public class Storage {
      * @return ArrayList of tasks
      * @throws IOException if there's an error reading the file
      */
-    public static ArrayList<Task> loadTasks() throws IOException {
+    public ArrayList<Task> loadTasks() throws IOException {
         ArrayList<Task> tasks = new ArrayList<>();
         Path path = Paths.get(FILE_PATH);
 
@@ -63,6 +63,10 @@ public class Storage {
                 writer.write(task.toFileFormat() + System.lineSeparator());
             }
         }
+    }
+
+    public static void saveTasks(TaskList tasks) throws IOException {
+        saveTasks(tasks.getAllTasks());
     }
 
     /**

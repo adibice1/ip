@@ -1,11 +1,11 @@
+package dibo.task;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public class Deadline extends Task {
@@ -32,7 +32,7 @@ public class Deadline extends Task {
             throw new IllegalArgumentException("Input must start with 'deadline'");
         }
         if (!userInput.contains("/by")) {
-            throw new IllegalArgumentException("Missing '/by' in deadline command. Format: deadline <description> /by <time>");
+            throw new IllegalArgumentException("Missing '/by' in deadline dibo.command. Format: deadline <description> /by <time>");
         }
 
         String input = userInput.replace("deadline", "").trim();

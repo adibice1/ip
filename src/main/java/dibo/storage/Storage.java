@@ -1,11 +1,12 @@
-import java.io.File;
+package dibo.storage;
+
+import dibo.task.*;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -70,16 +71,16 @@ public class Storage {
     }
 
     /**
-     * Parses a line from the file into a Task object
+     * Parses a line from the file into a dibo.task.Task object
      * @param line The line to parse
-     * @return Task object
+     * @return dibo.task.Task object
      * @throws IllegalArgumentException if the line format is invalid
      */
     private static Task parseTask(String line) throws IllegalArgumentException {
         String[] parts = line.split(" \\| ");
 
         if (parts.length < 3) {
-            throw new IllegalArgumentException("Invalid task format: " + line);
+            throw new IllegalArgumentException("Invalid dibo.task format: " + line);
         }
 
         String type = parts[0].trim();
@@ -101,7 +102,7 @@ public class Storage {
 
                 case "D":
                     if (parts.length < 4) {
-                        throw new IllegalArgumentException("Deadline task missing time information: " + line);
+                        throw new IllegalArgumentException("dibo.task.Deadline dibo.task missing time information: " + line);
                     }
                     String dateTimeStr = parts[3].trim();
                     try {
@@ -115,13 +116,13 @@ public class Storage {
 
                 case "E":
                     if (parts.length < 4) {
-                        throw new IllegalArgumentException("Event task missing time information: " + line);
+                        throw new IllegalArgumentException("dibo.task.Event dibo.task missing time information: " + line);
                     }
                     String timeInfo = parts[3].trim();
 
                     // Only support the new format with pipe separator
                     if (!timeInfo.contains("|")) {
-                        throw new IllegalArgumentException("Event task has invalid time format. Expected 'from|to': " + line);
+                        throw new IllegalArgumentException("dibo.task.Event dibo.task has invalid time format. Expected 'from|to': " + line);
                     }
 
                     String[] timeParts = timeInfo.split("\\|", 2);
@@ -139,10 +140,10 @@ public class Storage {
                     }
 
                 default:
-                    throw new IllegalArgumentException("Unknown task type: " + type);
+                    throw new IllegalArgumentException("Unknown dibo.task type: " + type);
             }
         } catch (Exception e) {
-            throw new IllegalArgumentException("Failed to parse task: " + e.getMessage(), e);
+            throw new IllegalArgumentException("Failed to parse dibo.task: " + e.getMessage(), e);
         }
     }
 }

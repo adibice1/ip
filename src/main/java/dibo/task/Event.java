@@ -1,11 +1,11 @@
+package dibo.task;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 public class Event extends Task {
@@ -43,10 +43,10 @@ public class Event extends Task {
             throw new IllegalArgumentException("Input must start with 'event'");
         }
         if (!userInput.contains("/from")) {
-            throw new IllegalArgumentException("Missing '/from' in deadline command. Format: event <description> /from <time> /to <time>");
+            throw new IllegalArgumentException("Missing '/from' in deadline dibo.command. Format: event <description> /from <time> /to <time>");
         }
         if (!userInput.contains("/to")) {
-            throw new IllegalArgumentException("Missing '/to' in deadline command. Format: event <description> /from <time> /to <time>");
+            throw new IllegalArgumentException("Missing '/to' in deadline dibo.command. Format: event <description> /from <time> /to <time>");
         }
 
         String input = userInput.replace("event", "").trim();

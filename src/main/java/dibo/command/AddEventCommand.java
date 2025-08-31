@@ -1,3 +1,10 @@
+package dibo.command;
+
+import dibo.storage.Storage;
+import dibo.task.Event;
+import dibo.task.TaskList;
+import dibo.ui.Ui;
+
 public class AddEventCommand extends Command {
     private String userInput;
 

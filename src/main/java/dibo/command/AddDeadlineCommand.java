@@ -1,3 +1,10 @@
+package dibo.command;
+import dibo.storage.Storage;
+import dibo.task.Deadline;
+import dibo.task.Task;
+import dibo.task.TaskList;
+import dibo.ui.Ui;
+
 public class AddDeadlineCommand extends Command {
     private String userInput;
 

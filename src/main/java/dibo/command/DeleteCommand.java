@@ -1,3 +1,9 @@
+package dibo.command;
+import dibo.storage.Storage;
+import dibo.task.Task;
+import dibo.task.TaskList;
+import dibo.ui.Ui;
+
 public class DeleteCommand extends Command {
     private int index;
 

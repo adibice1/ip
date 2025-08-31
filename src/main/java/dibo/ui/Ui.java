@@ -1,3 +1,8 @@
+package dibo.ui;
+
+import dibo.task.Task;
+import dibo.task.TaskList;
+
 import java.util.Scanner;
 
 public class Ui {
@@ -17,7 +22,7 @@ public class Ui {
 
     public void showGoodbye() {
         System.out.println("Bye. Hope to see you again soon!");
-        System.out.println(horizontalLine);
+        // System.out.println(horizontalLine);
     }
 
     public String readCommand() {
@@ -37,20 +42,20 @@ public class Ui {
     }
 
     public void showTaskAdded(Task task, int totalTasks) {
-        System.out.println("Got it. I've added this task:");
+        System.out.println("Got it. I've added this dibo.task:");
         System.out.println(task);
         System.out.println("Now you have " + totalTasks + " tasks in the list.");
     }
 
     public void showTaskRemoved(Task task, int totalTasks) {
-        System.out.println("Noted. I've removed this task:");
+        System.out.println("Noted. I've removed this dibo.task:");
         System.out.println(task);
         System.out.println("Now you have " + totalTasks + " tasks in the list.");
     }
 
     public void showTaskList(TaskList tasks) {
         if (tasks.isEmpty()) {
-            System.out.println("Your task list is empty!");
+            System.out.println("Your dibo.task list is empty!");
         } else {
             System.out.println("Here are the tasks in your list: ");
             for (int i = 0; i < tasks.size(); i++) {

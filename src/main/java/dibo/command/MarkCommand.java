@@ -1,3 +1,8 @@
+package dibo.command;
+import dibo.storage.Storage;
+import dibo.task.TaskList;
+import dibo.ui.Ui;
+
 public class MarkCommand extends Command {
     private int index;
     private boolean isMark;
@@ -13,10 +18,10 @@ public class MarkCommand extends Command {
             tasks.validateIndex(index);
             if (isMark) {
                 tasks.markAsDone(index);
-                ui.showMessage("Nice! I've marked this task as done:");
+                ui.showMessage("Nice! I've marked this dibo.task as done:");
             } else {
                 tasks.markAsUndone(index);
-                ui.showMessage("OK, I've marked this task as not done yet:");
+                ui.showMessage("OK, I've marked this dibo.task as not done yet:");
             }
             ui.showMessage(tasks.get(index).toString());
             storage.saveTasks(tasks);

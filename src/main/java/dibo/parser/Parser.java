@@ -1,3 +1,7 @@
+package dibo.parser;
+
+import dibo.command.*;
+
 public class Parser {
 
     public static Command parse(String userInput) {
@@ -29,27 +33,27 @@ public class Parser {
     private static Command parseMarkCommand(String userInput, boolean isMark) {
         String numberStr = userInput.substring(isMark ? 4 : 6).trim();
         if (numberStr.isEmpty()) {
-            return new InvalidCommand("Please specify a task number to " +
+            return new InvalidCommand("Please specify a dibo.task number to " +
                     (isMark ? "mark" : "unmark"));
         }
         try {
             int taskNumber = Integer.parseInt(numberStr) - 1;
             return new MarkCommand(taskNumber, isMark);
         } catch (NumberFormatException e) {
-            return new InvalidCommand("Please enter a valid task number.");
+            return new InvalidCommand("Please enter a valid dibo.task number.");
         }
     }
 
     private static Command parseDeleteCommand(String userInput) {
         String numberStr = userInput.substring(6).trim();
         if (numberStr.isEmpty()) {
-            return new InvalidCommand("Please specify a task number to delete.");
+            return new InvalidCommand("Please specify a dibo.task number to delete.");
         }
         try {
             int taskNumber = Integer.parseInt(numberStr) - 1;
             return new DeleteCommand(taskNumber);
         } catch (NumberFormatException e) {
-            return new InvalidCommand("Please enter a valid task number");
+            return new InvalidCommand("Please enter a valid dibo.task number");
         }
     }
 

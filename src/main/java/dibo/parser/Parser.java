@@ -25,6 +25,8 @@ public class Parser {
             return parseDeleteCommand(userInput);
         } else if (lowerInput.startsWith("find date")) {
             return parseFindByDateCommand(userInput);
+        } else if (lowerInput.startsWith("find")) {
+            return parseFindCommand(userInput);
         } else {
             return new InvalidCommand("OOPS!!! I'm sorry, but I don't know what that means :-(");
         }
@@ -33,27 +35,27 @@ public class Parser {
     private static Command parseMarkCommand(String userInput, boolean isMark) {
         String numberStr = userInput.substring(isMark ? 4 : 6).trim();
         if (numberStr.isEmpty()) {
-            return new InvalidCommand("Please specify a dibo.task number to " +
+            return new InvalidCommand("Please specify a task number to " +
                     (isMark ? "mark" : "unmark"));
         }
         try {
             int taskNumber = Integer.parseInt(numberStr) - 1;
             return new MarkCommand(taskNumber, isMark);
         } catch (NumberFormatException e) {
-            return new InvalidCommand("Please enter a valid dibo.task number.");
+            return new InvalidCommand("Please enter a valid task number.");
         }
     }
 
     private static Command parseDeleteCommand(String userInput) {
         String numberStr = userInput.substring(6).trim();
         if (numberStr.isEmpty()) {
-            return new InvalidCommand("Please specify a dibo.task number to delete.");
+            return new InvalidCommand("Please specify a task number to delete.");
         }
         try {
             int taskNumber = Integer.parseInt(numberStr) - 1;
             return new DeleteCommand(taskNumber);
         } catch (NumberFormatException e) {
-            return new InvalidCommand("Please enter a valid dibo.task number");
+            return new InvalidCommand("Please enter a valid task number");
         }
     }
 
@@ -79,6 +81,14 @@ public class Parser {
             return new InvalidCommand("Please specify a date to search for. Format: find date <date>");
         }
         return new FindByDateCommand(dateStr);
+    }
+
+    private static Command parseFindCommand(String userInput) {
+        String searchTerm = userInput.substring(5).trim();
+        if (searchTerm.isEmpty()) {
+            return new InvalidCommand("Please specify a word to search for. Format: find <word>");
+        }
+        return new FindCommand(searchTerm);
     }
 }
 

@@ -3,6 +3,7 @@ package dibo.ui;
 import dibo.task.Task;
 import dibo.task.TaskList;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Ui {
@@ -42,25 +43,32 @@ public class Ui {
     }
 
     public void showTaskAdded(Task task, int totalTasks) {
-        System.out.println("Got it. I've added this dibo.task:");
+        System.out.println("Got it. I've added this task:");
         System.out.println(task);
         System.out.println("Now you have " + totalTasks + " tasks in the list.");
     }
 
     public void showTaskRemoved(Task task, int totalTasks) {
-        System.out.println("Noted. I've removed this dibo.task:");
+        System.out.println("Noted. I've removed this task:");
         System.out.println(task);
         System.out.println("Now you have " + totalTasks + " tasks in the list.");
     }
 
     public void showTaskList(TaskList tasks) {
         if (tasks.isEmpty()) {
-            System.out.println("Your dibo.task list is empty!");
+            System.out.println("Your task list is empty!");
         } else {
             System.out.println("Here are the tasks in your list: ");
             for (int i = 0; i < tasks.size(); i++) {
                 System.out.println((i + 1) + ". " + tasks.get(i));
             }
+        }
+    }
+
+    public void showSearchResults(List<Task> matchingTasks, String searchTerm) {
+        System.out.println("Here are the matching tasks in your list:");
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            System.out.println((i + 1) + "." + matchingTasks.get(i));
         }
     }
 }

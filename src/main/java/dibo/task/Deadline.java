@@ -52,7 +52,7 @@ public class Deadline extends Task {
         return new Deadline(description, dateTime, by);
     }
 
-    private static LocalDateTime parseDateTime(String dateTimeString) {
+    public static LocalDateTime parseDateTime(String dateTimeString) {
         List<String> patterns = Arrays.asList(
                 "yyyy-MM-dd HHmm",    // 2019-12-02 1800
                 "dd/MM/yyyy HHmm",    // 02/12/2019 1800

@@ -76,7 +76,7 @@ public class Storage {
      * @return dibo.task.Task object
      * @throws IllegalArgumentException if the line format is invalid
      */
-    private static Task parseTask(String line) throws IllegalArgumentException {
+    public static Task parseTask(String line) throws IllegalArgumentException {
         String[] parts = line.split(" \\| ");
 
         if (parts.length < 3) {

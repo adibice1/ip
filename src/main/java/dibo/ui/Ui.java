@@ -35,7 +35,7 @@ public class Ui {
     }
 
     public void showError(String message){
-        System.out.println("❌ " + message);
+        System.out.println("X " + message);
     }
 
     public void showMessage(String message) {

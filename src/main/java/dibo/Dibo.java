@@ -27,6 +27,13 @@ public class Dibo {
         }
     }
 
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        return "Dibo heard: " + input;
+    }
+
 
     public void run() {
         ui.showWelcome();

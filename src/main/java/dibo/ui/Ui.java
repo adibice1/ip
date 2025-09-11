@@ -8,22 +8,25 @@ import java.util.Scanner;
 
 public class Ui {
     private Scanner scanner;
-    private static final String horizontalLine = "===============================================";
+    private static final String horizontalLine = "=================================";
+    private String output;
 
     public Ui() {
         this.scanner = new Scanner(System.in);
     }
 
     public void showWelcome() {
-        System.out.println(horizontalLine);
-        System.out.println("Hello! I'm Dibo the Dragon");
-        System.out.println("What can I do for you?");
-        System.out.println(horizontalLine);
+        this.output = horizontalLine +
+                System.lineSeparator() +
+                "Hello! I'm Dibo the Dragon" +
+                System.lineSeparator() +
+                "What can I do for you?" +
+                System.lineSeparator() +
+                horizontalLine;
     }
 
     public void showGoodbye() {
-        System.out.println("Bye. Hope to see you again soon!");
-        // System.out.println(horizontalLine);
+        this.output = "Bye. Hope to see you again soon!" + System.lineSeparator();
     }
 
     public String readCommand() {
@@ -31,44 +34,60 @@ public class Ui {
     }
 
     public void showLine() {
-        System.out.println(horizontalLine);
+        this.output = horizontalLine;
     }
 
     public void showError(String message){
-        System.out.println("X " + message);
+        this.output = "X " + message;
     }
 
     public void showMessage(String message) {
-        System.out.println(message);
+        this.output = message;
     }
 
     public void showTaskAdded(Task task, int totalTasks) {
-        System.out.println("Got it. I've added this task:");
-        System.out.println(task);
-        System.out.println("Now you have " + totalTasks + " tasks in the list.");
+        this.output = horizontalLine +
+                System.lineSeparator() +
+                "Got it. I've added this task:" +
+                System.lineSeparator() +
+                task +
+                System.lineSeparator() +
+                "Now you have " + totalTasks + " tasks in the list." +
+                System.lineSeparator() +
+                horizontalLine;
     }
 
     public void showTaskRemoved(Task task, int totalTasks) {
-        System.out.println("Noted. I've removed this task:");
-        System.out.println(task);
-        System.out.println("Now you have " + totalTasks + " tasks in the list.");
+        this.output = horizontalLine +
+                System.lineSeparator() +
+                "Noted. I've removed this task:" +
+                System.lineSeparator() +
+                task +
+                System.lineSeparator() +
+                "Now you have " + totalTasks + " tasks in the list." +
+                System.lineSeparator() +
+                horizontalLine;
     }
 
     public void showTaskList(TaskList tasks) {
         if (tasks.isEmpty()) {
-            System.out.println("Your task list is empty!");
+            this.output = "Your task list is empty!" + System.lineSeparator();
         } else {
-            System.out.println("Here are the tasks in your list: ");
+            this.output = "Here are the tasks in your list: " + System.lineSeparator();
             for (int i = 0; i < tasks.size(); i++) {
-                System.out.println((i + 1) + ". " + tasks.get(i));
+                this.output = output + (i + 1) + ". " + tasks.get(i).toString() + System.lineSeparator();
             }
         }
     }
 
     public void showSearchResults(List<Task> matchingTasks, String searchTerm) {
-        System.out.println("Here are the matching tasks in your list:");
+        this.output = "Here are the matching tasks in your list:" + System.lineSeparator();
         for (int i = 0; i < matchingTasks.size(); i++) {
-            System.out.println((i + 1) + "." + matchingTasks.get(i));
+            this.output = output + (i + 1) + ". " + matchingTasks.get(i).toString() + System.lineSeparator();
         }
+    }
+
+    public String returnOutput() {
+        return output;
     }
 }

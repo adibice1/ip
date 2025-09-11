@@ -31,11 +31,20 @@ public class Dibo {
      * Generates a response for the user's chat message.
      */
     public String getResponse(String input) {
-        return "Dibo heard: " + input;
+        try {
+
+            Command command = parser.parse(input);
+            command.execute(tasks, ui, storage);
+            boolean isExit = command.isExit();
+
+            return ui.returnOutput();
+        } catch (Exception e) {
+            return "Something went wrong: " + e.getMessage();
+        }
     }
 
 
-    public void run() {
+    /*public void run() {
         ui.showWelcome();
         boolean isExit = false;
 
@@ -57,5 +66,5 @@ public class Dibo {
 
     public static void main(String[] args) {
         new Dibo().run();
-    }
+    }*/
 }

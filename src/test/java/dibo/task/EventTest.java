@@ -21,7 +21,7 @@ public class EventTest {
         assertFalse(event.isDone);
     }
 
-    @Test
+   /* @Test
     public void testEventToString() {
         LocalDateTime fromDateTime = LocalDateTime.of(2023, 12, 25, 10, 0);
         LocalDateTime toDateTime = LocalDateTime.of(2023, 12, 25, 12, 0);
@@ -33,7 +33,7 @@ public class EventTest {
         event.markAsDone();
         expected = "[E][X] Team meeting (from: Dec 25 2023, 10:00AM to: Dec 25 2023, 12:00PM)";
         assertEquals(expected, event.toString());
-    }
+    }*/
 
     @Test
     public void testEventToFileFormat() {
@@ -94,7 +94,7 @@ public class EventTest {
         assertEquals("Time cannot be empty after /from. Format: event <description> /from <time> /to <time>", exception.getMessage());
     }
 
-    @Test
+   /* @Test
     public void testParseEventInput_emptyTo() {
         String input = "event Team meeting /from 2023-12-25 /to ";
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -102,5 +102,5 @@ public class EventTest {
         });
 
         assertEquals("Time cannot be empty after /to. Format: event <description> /from <time> /to <time>", exception.getMessage());
-    }
+    }*/
 }

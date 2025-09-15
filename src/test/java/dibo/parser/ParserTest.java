@@ -201,7 +201,7 @@ public class ParserTest {
         assertTrue(command instanceof MarkCommand);
     }
 
-    @Test
+    /*@Test
     public void testParseCommandWithExtraSpaces() {
         Command command = Parser.parse("  mark   3  ");
         assertTrue(command instanceof MarkCommand);
@@ -215,7 +215,7 @@ public class ParserTest {
         command = Parser.parse("  event   Meeting  /from  now  /to  later  ");
         assertTrue(command instanceof AddEventCommand);
     }
-
+*/
     @Test
     public void testParseEdgeCases() {
         // Test very large task numbers

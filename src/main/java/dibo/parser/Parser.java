@@ -5,6 +5,8 @@ import dibo.command.*;
 public class Parser {
 
     public static Command parse(String userInput) {
+        assert userInput != null : "Parser.parse: userInput must not be null";
+
         String lowerInput = userInput.toLowerCase().trim();
 
         if (lowerInput.equals("bye")) {
@@ -34,6 +36,9 @@ public class Parser {
 
     private static Command parseMarkCommand(String userInput, boolean isMark) {
         String numberStr = userInput.substring(isMark ? 4 : 6).trim();
+        // ASSERT: numberStr refers to the remainder after command keyword
+        assert numberStr != null : "Parser.parseMarkCommand: numberStr should not be null";
+
         if (numberStr.isEmpty()) {
             return new InvalidCommand("Please specify a task number to " +
                     (isMark ? "mark" : "unmark"));
@@ -48,6 +53,9 @@ public class Parser {
 
     private static Command parseDeleteCommand(String userInput) {
         String numberStr = userInput.substring(6).trim();
+        // ASSERT: numberStr refers to the remainder after 'delete'
+        assert numberStr != null : "Parser.parseDeleteCommand: numberStr should not be null";
+
         if (numberStr.isEmpty()) {
             return new InvalidCommand("Please specify a task number to delete.");
         }
@@ -77,6 +85,8 @@ public class Parser {
 
     private static Command parseFindByDateCommand(String userInput) {
         String dateStr = userInput.substring(9).trim();
+        assert dateStr != null : "Parser.parseFindByDate: dateStr must not be null";
+
         if (dateStr.isEmpty()) {
             return new InvalidCommand("Please specify a date to search for. Format: find date <date>");
         }
@@ -85,6 +95,8 @@ public class Parser {
 
     private static Command parseFindCommand(String userInput) {
         String searchTerm = userInput.substring(5).trim();
+        assert searchTerm != null : "Parser.parseFind: searchTerm must not be null";
+
         if (searchTerm.isEmpty()) {
             return new InvalidCommand("Please specify a word to search for. Format: find <word>");
         }

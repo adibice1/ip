@@ -13,6 +13,7 @@ public class Todo extends Task {
      */
     public Todo(String description) {
         super(description);
+        assert description != null && !description.isBlank() : "Todo: description must not be null/blank";
     }
 
     /**

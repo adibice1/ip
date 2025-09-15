@@ -71,79 +71,95 @@ public class Storage {
     }
 
     /**
-     * Parses a line from the file into a dibo.task.Task object
+     * Parses a line from the file into a dibo.task.Task object.
+     * Applies SLAP: high-level flow here; details in small helpers.
+     *
      * @param line The line to parse
      * @return dibo.task.Task object
      * @throws IllegalArgumentException if the line format is invalid
      */
     public static Task parseTask(String line) throws IllegalArgumentException {
-        String[] parts = line.split(" \\| ");
-
-        if (parts.length < 3) {
-            throw new IllegalArgumentException("Invalid dibo.task format: " + line);
-        }
-
-        String type = parts[0].trim();
-        String isDoneStr = parts[1].trim();
-        String description = parts[2].trim();
-
-        // Validate isDone field
-        if (!isDoneStr.equals("0") && !isDoneStr.equals("1")) {
-            throw new IllegalArgumentException("Invalid completion status: " + isDoneStr);
-        }
-        boolean isDone = isDoneStr.equals("1");
-
         try {
-            switch (type) {
-                case "T":
-                    Todo todo = new Todo(description);
-                    if (isDone) todo.markAsDone();
-                    return todo;
+            String[] parts = splitLine(line);                 // validates min length
+            String type = parts[0].trim();
+            boolean isDone = parseIsDone(parts[1].trim());    // validates & converts
+            String description = parts[2].trim();
 
-                case "D":
-                    if (parts.length < 4) {
-                        throw new IllegalArgumentException("dibo.task.Deadline dibo.task missing time information: " + line);
-                    }
-                    String dateTimeStr = parts[3].trim();
-                    try {
-                        LocalDateTime dateTime = LocalDateTime.parse(dateTimeStr, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-                        Deadline deadline = new Deadline(description, dateTime, dateTimeStr);
-                        if (isDone) deadline.markAsDone();
-                        return deadline;
-                    } catch (DateTimeParseException e) {
-                        throw new IllegalArgumentException("Invalid date-time format in file: " + dateTimeStr);
-                    }
+            Task task = switch (type) {
+                case "T" -> buildTodo(description);
+                case "D" -> buildDeadline(parts, description);
+                case "E" -> buildEvent(parts, description);
+                default -> throw new IllegalArgumentException("Unknown task type: " + type);
+            };
 
-                case "E":
-                    if (parts.length < 4) {
-                        throw new IllegalArgumentException("dibo.task.Event dibo.task missing time information: " + line);
-                    }
-                    String timeInfo = parts[3].trim();
-
-                    // Only support the new format with pipe separator
-                    if (!timeInfo.contains("|")) {
-                        throw new IllegalArgumentException("dibo.task.Event dibo.task has invalid time format. Expected 'from|to': " + line);
-                    }
-
-                    String[] timeParts = timeInfo.split("\\|", 2);
-                    String from = timeParts[0].trim();
-                    String to = timeParts.length > 1 ? timeParts[1].trim() : from; // Use from as default if to is missing
-
-                    try {
-                        LocalDateTime fromDateTime = LocalDateTime.parse(from, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-                        LocalDateTime toDateTime = LocalDateTime.parse(to, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-                        Event event = new Event(description, from, to, fromDateTime, toDateTime);
-                        if (isDone) event.markAsDone();
-                        return event;
-                    } catch (DateTimeParseException e) {
-                        throw new IllegalArgumentException("Invalid date-time format in file: " + timeInfo);
-                    }
-
-                default:
-                    throw new IllegalArgumentException("Unknown dibo.task type: " + type);
+            if (isDone) {
+                task.markAsDone();
             }
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Failed to parse dibo.task: " + e.getMessage(), e);
+            return task;
+
+        } catch (IllegalArgumentException e) {
+            // preserve original message; add uniform context
+            throw new IllegalArgumentException("Failed to parse task: " + e.getMessage(), e);
         }
     }
+
+    private static String[] splitLine(String line) {
+        String[] parts = line.split(" \\| ");
+        if (parts.length < 3) {
+            throw new IllegalArgumentException("Invalid task format: " + line);
+        }
+        return parts;
+    }
+
+    private static boolean parseIsDone(String isDoneStr) {
+        if (!"0".equals(isDoneStr) && !"1".equals(isDoneStr)) {
+            throw new IllegalArgumentException("Invalid completion status: " + isDoneStr);
+        }
+        return "1".equals(isDoneStr);
+    }
+
+    private static Todo buildTodo(String description) {
+        return new Todo(description);
+    }
+
+    private static Deadline buildDeadline(String[] parts, String description) {
+        if (parts.length < 4) {
+            throw new IllegalArgumentException("Deadline task missing time information");
+        }
+        String dateTimeStr = parts[3].trim();
+        LocalDateTime dateTime = parseIsoDateTime(dateTimeStr, "Invalid date-time format in file: " + dateTimeStr);
+        return new Deadline(description, dateTime, dateTimeStr);
+    }
+
+    private static Event buildEvent(String[] parts, String description) {
+        if (parts.length < 4) {
+            throw new IllegalArgumentException("Event task missing time information");
+        }
+        String timeInfo = parts[3].trim();
+
+        // Only support the new format with pipe separator: "from|to"
+        if (!timeInfo.contains("|")) {
+            throw new IllegalArgumentException("Event task has invalid time format. Expected 'from|to': " + timeInfo);
+        }
+
+        String[] timeParts = timeInfo.split("\\|", 2);
+        String fromRaw = timeParts[0].trim();
+        String toRaw   = (timeParts.length > 1 ? timeParts[1] : fromRaw).trim(); // default to 'from' if missing
+
+        LocalDateTime fromDateTime = parseIsoDateTime(fromRaw, "Invalid date-time format in file: " + fromRaw);
+        LocalDateTime toDateTime   = parseIsoDateTime(toRaw,   "Invalid date-time format in file: " + toRaw);
+
+        // Keep your constructor parameter order exactly as used in your codebase:
+        // Event(description, from, to, fromDateTime, toDateTime)
+        return new Event(description, fromRaw, toRaw, fromDateTime, toDateTime);
+    }
+
+    private static LocalDateTime parseIsoDateTime(String value, String errorMessage) {
+        try {
+            return LocalDateTime.parse(value, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException(errorMessage);
+        }
+    }
+
 }

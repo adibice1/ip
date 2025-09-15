@@ -29,6 +29,8 @@ public class Event extends Task {
      */
     public Event(String description, String from, String to, LocalDateTime fromDateTime, LocalDateTime toDateTime) {
         super(description);
+        assert fromDateTime != null && toDateTime != null : "Event: datetimes must not be null";
+        assert !toDateTime.isBefore(fromDateTime) : "Event: end must be >= start";
         this.from = from;
         this.to = to;
         this.fromDateTime = fromDateTime;
@@ -114,6 +116,10 @@ public class Event extends Task {
         LocalDateTime fromDateTime = parseDateTime(from);
         LocalDateTime toDateTime = parseDateTime(to);
 
+        assert fromDateTime != null && toDateTime != null : "Event.parseEventInput: parsed datetimes must not be null";
+        assert !toDateTime.isBefore(fromDateTime) : "Event.parseEventInput: to must not be before from";
+
+
         return new Event(description, from, to, fromDateTime, toDateTime);
     }
 
@@ -178,6 +184,7 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
+        assert fromDateTime != null && toDateTime != null : "Event.toString: datetimes must not be null";
         String fromFormattedDate = fromDateTime.format(DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma"));
         String toFormattedDate = toDateTime.format(DateTimeFormatter.ofPattern("MMM dd yyyy, h:mma"));
         return "[E]" + super.toString() + " (from: " + fromFormattedDate + " to: " + toFormattedDate + ")";

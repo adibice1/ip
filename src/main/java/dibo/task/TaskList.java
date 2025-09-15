@@ -14,6 +14,7 @@ public class TaskList {
      */
     public TaskList() {
         this.tasks = new ArrayList<>();
+        assert this.tasks != null : "TaskList: tasks list must be initialized";
     }
 
     /**
@@ -32,6 +33,7 @@ public class TaskList {
      */
     public void add(Task task) {
         tasks.add(task);
+        assert task != null : "TaskList.addTask: task must not be null";
     }
 
     /**

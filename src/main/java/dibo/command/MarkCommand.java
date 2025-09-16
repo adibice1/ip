@@ -16,17 +16,21 @@ public class MarkCommand extends Command {
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         try {
             tasks.validateIndex(index);
+            StringBuilder sb = new StringBuilder();
             if (isMark) {
                 tasks.markAsDone(index);
-                ui.showMessage("Nice! I've marked this dibo.task as done:");
+                sb.append("Nice! I've marked this task as done:").append(System.lineSeparator());
             } else {
                 tasks.markAsUndone(index);
-                ui.showMessage("OK, I've marked this dibo.task as not done yet:");
+                sb.append("OK, I've marked this task as not done yet:").append(System.lineSeparator());
             }
-            ui.showMessage(tasks.get(index).toString());
+            sb.append(tasks.get(index).toString());
+
+            ui.showMessage(sb.toString());   // single call
             storage.saveTasks(tasks);
         } catch (Exception e) {
             ui.showError(e.getMessage());
         }
     }
+
 }

@@ -87,6 +87,14 @@ public class Ui {
         }
     }
 
+    public void showMarked() {
+        this.output = "Nice! I've marked this task as done:" + System.lineSeparator();
+    }
+
+    public void showUnmarked() {
+        this.output = "OK, I've marked this task as not done yet:" + System.lineSeparator();
+    }
+
     public String returnOutput() {
         return output;
     }

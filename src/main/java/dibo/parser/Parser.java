@@ -29,6 +29,8 @@ public class Parser {
             return parseFindByDateCommand(userInput);
         } else if (lowerInput.startsWith("find")) {
             return parseFindCommand(userInput);
+        } else if (lowerInput.startsWith("schedule")) {
+            return parseScheduleCommand(userInput);
         } else {
             return new InvalidCommand("OOPS!!! I'm sorry, but I don't know what that means :-(");
         }
@@ -101,6 +103,16 @@ public class Parser {
             return new InvalidCommand("Please specify a word to search for. Format: find <word>");
         }
         return new FindCommand(searchTerm);
+    }
+
+    private static Command parseScheduleCommand(String userInput) {
+        String dateStr = userInput.substring(8).trim();
+        assert dateStr != null : "Parser.parseScheduleCommand: dateStr must not be null";
+
+        if (dateStr.isEmpty()) {
+            return new InvalidCommand("Please specify a date to view schedule. Format: schedule <date>");
+        }
+        return new ViewScheduleCommand(dateStr);
     }
 }
 

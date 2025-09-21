@@ -1,10 +1,10 @@
-# DiboPro - User Guide
+# Dibo - User Guide
 
 > "Your mind is for having ideas, not holding them." – David Allen
 
 DiboPro frees your mind of having to remember things you need to do.
 
-## Why DiboPro?
+## Why Dibo?
 
 - **Text-based**
 - **Easy to learn**
@@ -32,7 +32,7 @@ Get notified about upcoming tasks and deadlines.
 
 ## For Java Programmers
 
-Use DiboPro to practice Java too! Here's the main method:
+Use Dibo to practice Java too! Here's the main method:
 
 ```java
 public class Main {

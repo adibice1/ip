@@ -25,8 +25,6 @@ public class Parser {
             return parseEventCommand(userInput);
         } else if (lowerInput.startsWith("delete")) {
             return parseDeleteCommand(userInput);
-        } else if (lowerInput.startsWith("find date")) {
-            return parseFindByDateCommand(userInput);
         } else if (lowerInput.startsWith("find")) {
             return parseFindCommand(userInput);
         } else if (lowerInput.startsWith("schedule")) {
@@ -83,16 +81,6 @@ public class Parser {
 
     private static Command parseEventCommand(String userInput) {
         return new AddEventCommand(userInput);
-    }
-
-    private static Command parseFindByDateCommand(String userInput) {
-        String dateStr = userInput.substring(9).trim();
-        assert dateStr != null : "Parser.parseFindByDate: dateStr must not be null";
-
-        if (dateStr.isEmpty()) {
-            return new InvalidCommand("Please specify a date to search for. Format: find date <date>");
-        }
-        return new FindByDateCommand(dateStr);
     }
 
     private static Command parseFindCommand(String userInput) {

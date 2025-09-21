@@ -151,27 +151,6 @@ public class ParserTest {
     }
 
     @Test
-    public void testParseFindByDateCommand() {
-        Command command = Parser.parse("find date 2023-12-25");
-        assertTrue(command instanceof FindByDateCommand);
-
-        command = Parser.parse("find date tomorrow");
-        assertTrue(command instanceof FindByDateCommand);
-
-        command = Parser.parse("FIND DATE 2023-12-31");
-        assertTrue(command instanceof FindByDateCommand);
-    }
-
-    @Test
-    public void testParseFindByDateCommand_invalid() {
-        Command command = Parser.parse("find date");
-        assertTrue(command instanceof InvalidCommand);
-
-        command = Parser.parse("find date ");
-        assertTrue(command instanceof InvalidCommand);
-    }
-
-    @Test
     public void testParseInvalidCommand() {
         Command command = Parser.parse("invalid command");
         assertTrue(command instanceof InvalidCommand);

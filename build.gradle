@@ -49,7 +49,7 @@ application {
 shadowJar {
     archiveBaseName = "dibo"
     archiveClassifier = null
-    archiveFileName = 'dibo.jar'
+    archiveFileName = "dibo.jar"
 }
 
 run{

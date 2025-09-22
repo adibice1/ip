@@ -23,7 +23,8 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            fxmlLoader.<MainWindow>getController().setDibo(dibo);  // inject the Duke instance
+            stage.setTitle("Dibo Chatbot");
+            fxmlLoader.<MainWindow>getController().setDibo(dibo);  // inject the Dibo instance
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

@@ -83,7 +83,7 @@ public class ViewScheduleCommand extends Command {
         } else {
             StringBuilder scheduleOutput = new StringBuilder();
             scheduleOutput.append("Schedule for ").append(formattedDate).append(":\n");
-            scheduleOutput.append("=".repeat(50)).append("\n");
+            scheduleOutput.append("=".repeat(33)).append("\n");
 
             for (int i = 0; i < scheduleTasks.size(); i++) {
                 Task task = scheduleTasks.get(i);
@@ -103,7 +103,7 @@ public class ViewScheduleCommand extends Command {
                 scheduleOutput.append((i + 1)).append(". ").append(task).append(timeInfo).append("\n");
             }
 
-            scheduleOutput.append("=".repeat(50)).append("\n");
+            scheduleOutput.append("=".repeat(33)).append("\n");
             scheduleOutput.append("Total tasks: ").append(scheduleTasks.size());
 
             ui.showMessage(scheduleOutput.toString());

@@ -160,7 +160,7 @@ Total tasks: 2
 
 ## Viewing Your Tasks
 
-Dibo can display your tasks in the form of a schedule, making it easier to see what’s coming up.
+Dibo can display your tasks in the form of a list, making it easier to see the total number of tasks.
 
 **Usage:**
 ```
@@ -181,6 +181,29 @@ Here are the tasks in your list:
 3. [T][ ] clean room
 4. [D][ ] submit CS2100 assignment (by: Sep 25 2025, 11:59pm)
 =================================================================
+```
+
+---
+
+## Finding Your Tasks
+
+Dibo can find any related tasks from a given word.
+
+**Usage:**
+```
+find <any word in task name>
+```
+**Example:**
+
+```
+find assignment
+```
+**Expected Outcome:**
+
+```
+Here are the matching tasks in your list:
+1. [D][ ] submit CS2040S assignment (by: Sep 30 2025, 11:59pm)
+2. [D][ ] submit CS2100 assignment (by: Sep 25 2025, 11:59pm)
 ```
 
 ---
@@ -215,7 +238,7 @@ Now you have 4 tasks in the list.
 
 ## Exiting Dibo
 
-Say bye to Dibo!
+Say bye to Dibo! Dibo will close after 3 seconds and saves your tasks.
 
 **Usage:**
 

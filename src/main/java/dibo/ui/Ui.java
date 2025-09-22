@@ -6,11 +6,17 @@ import dibo.task.TaskList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Ui of the Dibo application.
+ */
 public class Ui {
     private Scanner scanner;
     private static final String horizontalLine = "=================================";
     private String output;
 
+    /**
+     * Creates a new Ui.
+     */
     public Ui() {
         this.scanner = new Scanner(System.in);
     }

@@ -3,15 +3,31 @@ import dibo.storage.Storage;
 import dibo.task.TaskList;
 import dibo.ui.Ui;
 
+/**
+ * Represents a command that marks or unmarks a task as done.
+ */
 public class MarkCommand extends Command {
     private int index;
     private boolean isMark;
 
+    /**
+     * Creates a new MarkCommand.
+     *
+     * @param index index parameter.
+     * @param isMark isMark parameter.
+     */
     public MarkCommand(int index, boolean isMark) {
         this.index = index;
         this.isMark = isMark;
     }
 
+    /**
+     * Executes this command using the given task list, UI and storage.
+     *
+     * @param tasks   the task list to operate on
+     * @param ui      the UI used to display messages
+     * @param storage the storage used to persist changes
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         try {
@@ -32,5 +48,4 @@ public class MarkCommand extends Command {
             ui.showError(e.getMessage());
         }
     }
-
 }

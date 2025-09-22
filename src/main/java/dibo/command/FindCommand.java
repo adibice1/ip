@@ -9,13 +9,28 @@ import dibo.ui.Ui;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a command that searches for tasks matching a keyword.
+ */
 public class FindCommand extends Command {
     private String searchTerm;
 
+    /**
+     * Creates a new FindCommand.
+     *
+     * @param searchTerm searchTerm parameter.
+     */
     public FindCommand(String searchTerm) {
         this.searchTerm = searchTerm;
     }
 
+    /**
+     * Executes this command using the given task list, UI and storage.
+     *
+     * @param tasks   the task list to operate on
+     * @param ui      the UI used to display messages
+     * @param storage the storage used to persist changes
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
         try {
@@ -36,6 +51,4 @@ public class FindCommand extends Command {
         }
         return matchingTasks;
     }
-
-
 }

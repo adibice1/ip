@@ -5,11 +5,17 @@ import dibo.task.TaskList;
 import dibo.ui.Ui;
 import dibo.parser.Parser;
 
+/**
+ * Dibo of the Dibo application.
+ */
 public class Dibo {
     private Ui ui;
     private Storage storage;
     private TaskList tasks;
     private Parser parser;
+    /**
+     * Creates a new Dibo.
+     */
 
     public Dibo() {
         this.ui = new Ui();
@@ -42,29 +48,5 @@ public class Dibo {
             return "Something went wrong: " + e.getMessage();
         }
     }
-
-
-    /*public void run() {
-        ui.showWelcome();
-        boolean isExit = false;
-
-        while (!isExit) {
-            try {
-                String fullCommand = ui.readCommand();
-                ui.showLine();
-
-                Command command = Parser.parse(fullCommand);
-                command.execute(tasks, ui, storage);
-                isExit = command.isExit();
-            } catch (Exception e) {
-                ui.showError("Something went wrong: " + e.getMessage());
-            } finally {
-                ui.showLine();
-            }
-        }
-    }
-
-    public static void main(String[] args) {
-        new Dibo().run();
-    }*/
 }
+
